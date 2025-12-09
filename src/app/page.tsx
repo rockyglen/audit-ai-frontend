@@ -65,7 +65,7 @@ export default function LandingPage() {
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <a 
-              href="https://github.com"
+              href="https://github.com/rockyglen/audit-ai-backend"
               target="_blank"
               className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl font-semibold transition-all flex items-center gap-2"
             >
