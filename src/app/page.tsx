@@ -1,208 +1,297 @@
-import Link from "next/link";
-import { 
-  Bot, 
-  Database, 
-  ShieldCheck, 
-  Cpu, 
-  ArrowRight, 
-  Search, 
-  Zap, 
-  Server,
-  GitBranch,
-  MessageSquare,
-  FileText
-} from "lucide-react";
+"use client";
 
-export default function LandingPage() {
+import Link from "next/link";
+import { ArrowRight, ShieldCheck, Database, Cpu, FileSearch, Layers, BrainCircuit, Lock, Terminal, Code2, Network } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+
+export default function Home() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: containerRef });
+  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+
   return (
-    <div className="min-h-screen bg-[#020617] text-white selection:bg-blue-500/30">
+    <div ref={containerRef} className="min-h-screen bg-[#020617] text-white font-sans selection:bg-emerald-500/30 relative overflow-hidden">
       
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#020617]/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
-            <div className="p-2 bg-blue-600 rounded-lg">
-              <ShieldCheck className="w-5 h-5 text-white" />
-            </div>
-            <span>AuditAI</span>
+      {/* --- BACKGROUND EFFECTS --- */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <motion.div style={{ y: yBg }} className="absolute inset-0 bg-[linear-gradient(to_right,#064e3b_1px,transparent_1px),linear-gradient(to_bottom,#064e3b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-emerald-600/20 rounded-full blur-[120px] opacity-40" />
+      </div>
+
+      {/* --- NAVBAR --- */}
+      <nav className="relative z-50 flex items-center justify-between px-6 py-6 max-w-7xl mx-auto border-b border-white/5 bg-[#020617]/50 backdrop-blur-md sticky top-0">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-gradient-to-tr from-emerald-600 to-teal-600 rounded-lg shadow-lg shadow-emerald-500/20">
+            <ShieldCheck className="w-5 h-5 text-white" />
           </div>
-          <div className="flex gap-6 text-sm font-medium text-gray-400">
-            <a href="#architecture" className="hover:text-blue-400 transition">System Design</a>
-            <a href="#stack" className="hover:text-blue-400 transition">Tech Stack</a>
-          </div>
+          <span className="text-xl font-bold tracking-tight text-white">AuditAI</span>
+        </div>
+        <div className="flex gap-6 items-center">
+            <Link href="https://github.com/rockyglen/audit-ai-backend" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
+                View Source Code
+            </Link>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] -z-10" />
-        <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-indigo-600/10 rounded-full blur-[100px] -z-10" />
-
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-medium uppercase tracking-wider">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-            </span>
-            System Online
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
-            Automated Compliance <br />
-            <span className="text-blue-500">Auditing Engine</span>
-          </h1>
-          
-          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            An autonomous RAG system that audits regulatory documents against the NIST Cybersecurity Framework using Semantic Routing and Vector Search.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link 
-              href="/chat"
-              className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-500 rounded-xl font-semibold transition-all hover:scale-105 flex items-center gap-2 shadow-lg shadow-blue-500/20"
-            >
-              Launch Auditor
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <a 
-              href="https://github.com/rockyglen/audit-ai-backend"
-              target="_blank"
-              className="px-8 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-xl font-semibold transition-all flex items-center gap-2"
-            >
-              View Source Code
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* --- LIVE ARCHITECTURE DIAGRAM --- */}
-      <section id="architecture" className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4">System Architecture</h2>
-          <p className="text-gray-400 max-w-xl mx-auto">
-            A visual breakdown of how AuditAI processes queries using a Router-First RAG pipeline.
-          </p>
-        </div>
-
-        {/* Diagram Container */}
-        <div className="relative max-w-4xl mx-auto">
+      <main className="relative z-10 flex flex-col items-center pt-20 pb-32 px-4">
+        
+        {/* --- HERO SECTION --- */}
+        <div className="text-center max-w-5xl mx-auto space-y-8 mb-16">
             
-          {/* Connecting Line (Vertical Spine) */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-blue-500/0 via-blue-500/50 to-blue-500/0 hidden md:block" />
+            {/* PROMINENT BADGE */}
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-900/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold uppercase tracking-widest backdrop-blur-md"
+            >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                Powered by LangGraph & Llama-3
+            </motion.div>
 
-          <div className="space-y-12 relative z-10">
-            
-            {/* Node 1: User Input */}
-            <div className="flex flex-col items-center">
-                <div className="p-4 bg-[#0B1120] border border-blue-500/30 rounded-2xl shadow-lg shadow-blue-900/20 w-64 text-center relative group hover:scale-105 transition duration-300">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase">Input</div>
-                    <div className="w-10 h-10 bg-gray-800 rounded-full mx-auto mb-3 flex items-center justify-center group-hover:bg-blue-600 transition">
-                        <Search className="w-5 h-5" />
+            <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-5xl md:text-7xl font-bold tracking-tight text-white leading-[1.1] drop-shadow-2xl"
+            >
+                The Instant NIST CSF 2.0 <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400">
+                    Compliance Expert
+                </span>
+            </motion.h1>
+
+            <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed"
+            >
+                A production-grade <strong>Agentic RAG System</strong> that doesn't just search—it <em>reasons</em>. 
+                Verify compliance rules instantly with zero hallucinations.
+            </motion.p>
+
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
+            >
+                <Link href="/chat">
+                    <button className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all hover:scale-105 shadow-xl shadow-emerald-500/20 flex items-center gap-3">
+                        <span>Launch Console</span>
+                        <ArrowRight className="w-4 h-4" />
+                    </button>
+                </Link>
+            </motion.div>
+        </div>
+
+        {/* --- TECH STACK BANNER --- */}
+        <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="w-full max-w-4xl border-y border-white/5 bg-white/[0.02] py-6 mb-24 backdrop-blur-sm"
+        >
+            <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                <TechItem name="LangGraph" icon={<Network size={18} className="text-orange-400"/>} />
+                <TechItem name="Llama 3" icon={<BrainCircuit size={18} className="text-blue-400"/>} />
+                <TechItem name="Qdrant" icon={<Database size={18} className="text-red-400"/>} />
+                <TechItem name="FastAPI" icon={<Cpu size={18} className="text-teal-400"/>} />
+                <TechItem name="Docker" icon={<Layers size={18} className="text-blue-500"/>} />
+            </div>
+            <p className="text-center text-[10px] text-gray-600 mt-4 uppercase tracking-widest font-semibold">Built on Modern Agentic Architecture</p>
+        </motion.div>
+
+        {/* --- 3D APP PREVIEW --- */}
+        <motion.div 
+            initial={{ opacity: 0, y: 100, rotateX: 20 }}
+            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+            transition={{ duration: 1, delay: 0.4, type: "spring" }}
+            className="relative w-full max-w-5xl mx-auto mb-32 perspective-1000"
+        >
+            <div className="relative rounded-xl border border-white/10 bg-[#0f172a]/80 shadow-2xl backdrop-blur-sm overflow-hidden transform transition-all hover:scale-[1.01] duration-500 group">
+                {/* Browser Toolbar */}
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-[#020617]">
+                    <div className="flex gap-1.5">
+                        <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                        <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
+                        <div className="w-3 h-3 rounded-full bg-green-500/50" />
                     </div>
-                    <h3 className="font-bold text-white">User Query</h3>
-                    <p className="text-xs text-gray-400 mt-1">"What is the Govern function?"</p>
+                    <div className="ml-4 px-3 py-1 rounded bg-white/5 text-[10px] text-gray-500 font-mono w-64 text-center">
+                        https://audit-ai-frontend-pi.vercel.app/
+                    </div>
                 </div>
-                <ArrowRight className="w-6 h-6 text-blue-500 rotate-90 mt-4 hidden md:block" />
+                {/* UI Preview */}
+                <div className="p-8 grid grid-cols-4 gap-6 h-[400px] opacity-80 pointer-events-none">
+                    <div className="col-span-1 border-r border-white/5 space-y-3">
+                        <div className="h-8 bg-emerald-600/20 rounded w-3/4" />
+                        <div className="h-4 bg-white/5 rounded w-1/2" />
+                        <div className="h-4 bg-white/5 rounded w-2/3" />
+                        <div className="h-4 bg-white/5 rounded w-1/2" />
+                    </div>
+                    <div className="col-span-3 space-y-4 pt-10 px-10">
+                        <div className="flex gap-4 flex-row-reverse">
+                            <div className="w-10 h-10 rounded-full bg-gray-700/50" />
+                            <div className="px-4 py-2 bg-emerald-600 rounded-2xl text-xs text-white flex items-center">
+                                What is the Recover function?
+                            </div>
+                        </div>
+                        <div className="flex gap-4">
+                            <div className="w-10 h-10 rounded-full bg-emerald-600/20" />
+                            <div className="space-y-2 w-full">
+                                <div className="h-4 bg-white/5 rounded w-3/4" />
+                                <div className="h-4 bg-white/5 rounded w-1/2" />
+                                <div className="flex gap-2 mt-2">
+                                    <div className="h-8 w-32 bg-teal-900/30 border border-teal-500/30 rounded flex items-center justify-center text-[10px] text-teal-300">NIST CSF 2.0</div>
+                                    <div className="h-8 w-32 bg-teal-900/30 border border-teal-500/30 rounded flex items-center justify-center text-[10px] text-teal-300">Page 42</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+            </div>
+            <div className="absolute -inset-4 bg-emerald-500/20 blur-3xl -z-10 rounded-[3rem]" />
+        </motion.div>
+
+        {/* --- ARCHITECTURE FLOW --- */}
+        <div className="w-full max-w-6xl mb-32">
+            <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">How It Works</h2>
+                <p className="text-gray-400">The Modern RAG Pipeline</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+                <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-emerald-500/0 via-emerald-500/50 to-emerald-500/0 -z-10" />
+
+                <ArchitectureStep 
+                    icon={<Layers size={24} />} 
+                    step="01" 
+                    title="Ingestion" 
+                    desc="We load the NIST CSF 2.0 PDF and split it into 1000-character semantic chunks." 
+                />
+                <ArchitectureStep 
+                    icon={<Database size={24} />} 
+                    step="02" 
+                    title="Vector Store" 
+                    desc="Chunks are embedded using Google Gemini and stored in Qdrant Cloud." 
+                />
+                <ArchitectureStep 
+                    icon={<BrainCircuit size={24} />} 
+                    step="03" 
+                    title="Reasoning" 
+                    desc="Llama-3 synthesizes the answer from valid chunks." 
+                />
+                <ArchitectureStep 
+                    icon={<Lock size={24} />} 
+                    step="04" 
+                    title="Verification" 
+                    desc="Sources are cited with page-level accuracy." 
+                />
+            </div>
+        </div>
+
+        {/* --- BENTO GRID FEATURES (HIGHLIGHTING LANGGRAPH) --- */}
+        <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* 1. Vector Search */}
+            <div className="p-8 rounded-3xl bg-[#0f172a]/50 border border-white/5 hover:border-emerald-500/30 transition-all group relative overflow-hidden flex flex-col justify-between">
+                <div>
+                    <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 text-emerald-400">
+                        <Database size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">Vector Search</h3>
+                    <p className="text-gray-400 text-sm">Powered by Qdrant & Gemini Embeddings for high-precision retrieval.</p>
+                </div>
             </div>
 
-            {/* Node 2: Semantic Router */}
-            <div className="flex flex-col items-center">
-                <div className="p-6 bg-[#0B1120] border border-purple-500/30 rounded-2xl shadow-lg shadow-purple-900/20 w-80 text-center relative hover:scale-105 transition duration-300">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-600 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase">Decision Layer</div>
-                    <div className="w-12 h-12 bg-purple-900/30 rounded-full mx-auto mb-3 flex items-center justify-center">
-                        <GitBranch className="w-6 h-6 text-purple-400" />
-                    </div>
-                    <h3 className="font-bold text-purple-100 text-lg">Semantic Router (AI)</h3>
-                    <p className="text-xs text-gray-400 mt-2">Analyzes intent: Is this a greeting or a compliance question?</p>
-                </div>
-            </div>
-
-            {/* Split Paths */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-24">
+            {/* 2. THE LANGGRAPH HIGHLIGHT (The "Best Thing") */}
+            <div className="md:col-span-2 p-8 rounded-3xl bg-gradient-to-br from-teal-900/30 via-[#0f172a] to-[#0f172a] border border-teal-500/30 hover:border-teal-400/50 transition-all relative overflow-hidden group">
                 
-                {/* Path A: Chat */}
-                <div className="flex flex-col items-center relative">
-                    <div className="absolute -top-8 left-1/2 w-px h-8 bg-purple-500/30 hidden md:block origin-bottom -rotate-45" style={{ transformOrigin: 'bottom center', height: '40px', top: '-40px', left: '50%'}}></div>
-                    <div className="p-5 bg-[#0B1120] border border-green-500/30 rounded-2xl w-full max-w-sm hover:border-green-500/60 transition">
-                        <div className="flex items-center gap-3 mb-2">
-                            <MessageSquare className="w-5 h-5 text-green-400" />
-                            <span className="text-sm font-bold text-green-400">Path A: Casual Chat</span>
-                        </div>
-                        <p className="text-xs text-gray-400">Instant response for greetings. Bypasses database to save cost & latency.</p>
+                {/* Background Animation for prominence */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-teal-500/10 via-transparent to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
+                
+                <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-teal-500/20 flex items-center justify-center text-teal-300 border border-teal-500/30 shadow-[0_0_15px_rgba(45,212,191,0.3)]">
+                        <Network size={32} className="animate-pulse" />
                     </div>
-                </div>
-
-                {/* Path B: RAG */}
-                <div className="flex flex-col items-center relative">
-                    <div className="absolute -top-8 left-1/2 w-px h-8 bg-purple-500/30 hidden md:block origin-bottom rotate-45" style={{ transformOrigin: 'bottom center', height: '40px', top: '-40px', left: '50%'}}></div>
-                    <div className="p-5 bg-[#0B1120] border border-blue-500/30 rounded-2xl w-full max-w-sm hover:border-blue-500/60 transition">
-                        <div className="flex items-center gap-3 mb-2">
-                            <Database className="w-5 h-5 text-blue-400" />
-                            <span className="text-sm font-bold text-blue-400">Path B: Vector Search</span>
+                    <div>
+                        <div className="inline-block px-3 py-1 mb-2 rounded-full bg-teal-500/20 text-teal-300 text-xs font-bold uppercase tracking-wider border border-teal-500/20">
+                            Core Brain
                         </div>
-                        <p className="text-xs text-gray-400 mb-3">1. Embed Query (Google Gemini)<br/>2. Retrieve Top-3 Chunks (Qdrant)<br/>3. Re-Rank Results</p>
-                        
-                        {/* Sub-node for Data */}
-                        <div className="flex items-center gap-2 p-2 bg-blue-900/10 rounded border border-blue-500/20">
-                            <FileText className="w-3 h-3 text-gray-400" />
-                            <span className="text-[10px] text-gray-400">NIST_Framework_2.0.pdf</span>
-                        </div>
+                        <h3 className="text-2xl font-bold text-white mb-2">Autonomous LangGraph Agent</h3>
+                        <p className="text-gray-300 text-base max-w-md">
+                            A cyclical graph state machine that manages chat history, self-corrects hallucinations, and intelligently routes non-compliance queries.
+                        </p>
                     </div>
                 </div>
             </div>
 
-            {/* Node 3: Synthesis */}
-            <div className="flex flex-col items-center pt-8">
-                <ArrowRight className="w-6 h-6 text-gray-600 rotate-90 mb-4 hidden md:block" />
-                <div className="p-6 bg-gradient-to-br from-[#0B1120] to-blue-900/10 border border-white/10 rounded-2xl w-80 text-center relative shadow-xl hover:shadow-blue-500/10 transition">
-                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase">Synthesis</div>
-                    <div className="w-12 h-12 bg-white/5 rounded-full mx-auto mb-3 flex items-center justify-center">
-                        <Bot className="w-6 h-6 text-blue-400" />
+            {/* 3. Citations */}
+            <div className="md:col-span-3 p-8 rounded-3xl bg-[#0f172a]/50 border border-white/5 hover:border-emerald-500/30 transition-all flex flex-col md:flex-row items-center justify-between gap-8">
+                 <div className="text-left">
+                    <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-6 text-emerald-400">
+                        <FileSearch size={24} />
                     </div>
-                    <h3 className="font-bold text-white text-lg">Llama-3 Reasoning</h3>
-                    <p className="text-xs text-gray-400 mt-2">Combines user query + retrieved NIST contexts to generate a fact-checked audit report.</p>
-                </div>
+                    <h3 className="text-xl font-bold text-white mb-3">Strict Citation Protocol</h3>
+                    <p className="text-gray-400 text-sm max-w-xl">
+                        AuditAI forces the LLM to provide page-level citations for every claim, ensuring zero hallucinations.
+                    </p>
+                 </div>
+                 {/* Visual Citation */}
+                 <div className="hidden sm:flex gap-2 opacity-70 group-hover:opacity-100 transition-opacity">
+                    <div className="bg-emerald-900/30 p-3 rounded-lg border border-emerald-500/30 w-32 text-center">
+                        <span className="text-emerald-200 text-xs font-bold">NIST CSF 2.0</span>
+                    </div>
+                    <div className="bg-emerald-900/30 p-3 rounded-lg border border-emerald-500/30 w-32 text-center">
+                        <span className="text-emerald-200 text-xs font-bold">Page 42</span>
+                    </div>
+                 </div>
             </div>
-
-          </div>
         </div>
-      </section>
 
-      {/* Tech Stack Strip */}
-      <section id="stack" className="py-20 border-t border-white/5 bg-white/[0.02]">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-2xl font-bold mb-10 text-center text-gray-500 uppercase tracking-widest text-sm">
-            Powered by Modern Infrastructure
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 text-center opacity-70">
-             <div className="flex flex-col items-center gap-3 hover:text-blue-400 transition hover:scale-110 duration-300">
-                <Search className="w-8 h-8" />
-                <span className="font-semibold">Google Gemini</span>
-             </div>
-             <div className="flex flex-col items-center gap-3 hover:text-red-400 transition hover:scale-110 duration-300">
-                <Database className="w-8 h-8" />
-                <span className="font-semibold">Qdrant Cloud</span>
-             </div>
-             <div className="flex flex-col items-center gap-3 hover:text-orange-400 transition hover:scale-110 duration-300">
-                <Cpu className="w-8 h-8" />
-                <span className="font-semibold">Groq LPU</span>
-             </div>
-             <div className="flex flex-col items-center gap-3 hover:text-purple-400 transition hover:scale-110 duration-300">
-                <Server className="w-8 h-8" />
-                <span className="font-semibold">Render</span>
-             </div>
-             <div className="flex flex-col items-center gap-3 hover:text-white transition hover:scale-110 duration-300">
-                <div className="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center font-bold">N</div>
-                <span className="font-semibold">Next.js 14</span>
-             </div>
-          </div>
-        </div>
-      </section>
+        {/* --- FOOTER --- */}
+        <footer className="mt-32 pt-10 border-t border-white/5 w-full max-w-6xl flex flex-col sm:flex-row justify-between items-center text-sm text-gray-500">
+            <div className="flex items-center gap-2 mb-4 sm:mb-0">
+                <ShieldCheck className="w-5 h-5 text-gray-600" />
+                <span>AuditAI Project</span>
+            </div>
+            <div className="flex gap-6">
+                <Link href="https://github.com/rockyglen/audit-ai-backend" className="hover:text-white cursor-pointer transition-colors">
+                    GitHub
+                </Link>
+            </div>
+        </footer>
 
-      {/* Footer */}
-      <footer className="py-8 text-center text-gray-600 text-sm border-t border-white/5">
-        <p>© 2025 AuditAI. Built for specific regulatory compliance auditing.</p>
-      </footer>
+      </main>
     </div>
   );
+}
+
+function TechItem({ name, icon }: { name: string, icon: React.ReactNode }) {
+    return (
+        <span className="text-sm font-bold text-gray-300 flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
+            {icon} {name}
+        </span>
+    )
+}
+
+function ArchitectureStep({ icon, step, title, desc }: { icon: React.ReactNode, step: string, title: string, desc: string }) {
+    return (
+        <div className="relative p-6 rounded-2xl bg-[#0f172a] border border-white/5 hover:border-emerald-500/30 transition-all text-center group z-10">
+            <div className="w-12 h-12 mx-auto rounded-full bg-gray-800 flex items-center justify-center text-gray-400 group-hover:bg-emerald-600 group-hover:text-white transition-colors mb-4 border-4 border-[#020617]">
+                {icon}
+            </div>
+            <div className="absolute top-4 right-4 text-xs font-bold text-gray-700 group-hover:text-emerald-500/50">
+                {step}
+            </div>
+            <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+            <p className="text-xs text-gray-400 leading-relaxed">{desc}</p>
+        </div>
+    )
 }
