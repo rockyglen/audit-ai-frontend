@@ -65,7 +65,8 @@ export default function ChatInterface() {
     setMessages((prev) => [...prev, assistantMsg]);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      // const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const apiUrl = "https://audit-ai-backend.onrender.com"
       const response = await fetch(`${apiUrl}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
