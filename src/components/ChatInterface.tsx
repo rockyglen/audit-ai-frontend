@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, FileText, ChevronRight, ArrowLeft, StopCircle, RefreshCcw, ShieldCheck } from "lucide-react";
+import { Send, Bot, User, FileText, ChevronRight, ArrowLeft, StopCircle, RefreshCcw, ShieldCheck, Server } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -66,7 +66,6 @@ export default function ChatInterface() {
 
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      
       const response = await fetch(`${apiUrl}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -129,7 +128,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#09090b] text-gray-100 font-sans rounded-xl border border-white/10 shadow-2xl overflow-hidden">
+    <div className="flex flex-col h-full bg-[#09090b] text-gray-100 font-sans rounded-xl border border-white/10 shadow-2xl overflow-hidden relative">
       
       {/* --- HEADER --- */}
       <header className="flex items-center justify-between px-6 py-4 bg-[#18181b] border-b border-white/5 z-20">
@@ -162,6 +161,24 @@ export default function ChatInterface() {
 
       {/* --- MESSAGES AREA --- */}
       <div className="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+        
+        {/* COLD START WARNING (Only shows if there is 1 message) */}
+        {messages.length === 1 && (
+            <motion.div 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-center justify-center mb-6"
+            >
+                <div className="bg-yellow-500/10 border border-yellow-500/20 text-yellow-200 px-4 py-3 rounded-lg flex items-center gap-3 max-w-lg shadow-lg">
+                    <Server size={20} className="text-yellow-500 flex-shrink-0 animate-pulse" />
+                    <p className="text-xs sm:text-sm">
+                        <span className="font-bold text-yellow-400">Server Notice:</span> This demo runs on free cloud infrastructure. 
+                        The first request may take <span className="font-bold text-white">45-60 seconds</span> to wake up the server. Please be patient!
+                    </p>
+                </div>
+            </motion.div>
+        )}
+
         {messages.map((msg) => (
             <motion.div 
               key={msg.id}
@@ -224,7 +241,7 @@ export default function ChatInterface() {
 
                 </div>
 
-                {/* --- FIXED SOURCES CAROUSEL --- */}
+                {/* Sources Carousel */}
                 {msg.sources && msg.sources.length > 0 && (
                   <div className="mt-4 w-full border-t border-white/5 pt-4">
                     <p className="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-3 flex items-center gap-2">
@@ -233,7 +250,6 @@ export default function ChatInterface() {
                     <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent">
                       {msg.sources.map((source, idx) => {
                         
-                        // FIX: Force correct name and URL for NIST-only mode
                         const displayName = "NIST CSF 2.0"; 
                         const officialUrl = `https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf#page=${source.page}`;
 
